@@ -13,13 +13,6 @@ const production = true;
 
 //Certificado https
 // Certificate
-if (production){
-  const options = {
-    cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/fullchain.pem'),
-    key: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/privkey.pem')
-  }
-}
-
 
 
 //Este middleware diz para o server, se os dados foram passados por um formulario.
@@ -35,6 +28,10 @@ server.listen(port, function(){
   console.log(`backend is running on port ${port}.`)
 })
 if (production){
+  const options = {
+    cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/privkey.pem')
+  }
   https.createServer(options, server).listen(8443);
 }
 module.exports = server
