@@ -1,4 +1,4 @@
-const port = 3030
+const port = 80
 //const https = require('https')
 //const devId = process.env.DEV_ID
 //const azMktPlace = process.env.AZ_MKT_PLACE
@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const server = express()
 
-const production = true;
+const production = false;
 
 //Certificado https
 // Certificate
@@ -21,17 +21,19 @@ server.use(bodyParser.urlencoded({ extended: true }))
 //Verificar se dentro da requisicao o corpo do conteudo é um JSON
 server.use(bodyParser.json())
 
-
+server.use(express.static(__dirname + '/static', { dotfiles: 'allow' } ))
 
 
 server.listen(port, function(){
   console.log(`backend is running on port ${port}.`)
 })
 if (production){
-  const options = {
-    cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/fullchain.pem'),
-    key: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/privkey.pem')
-  }
-  https.createServer(options, server).listen(8443);
+  https.createServer({
+    key: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/cert.pem'),
+    ca: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/chain.pem')
+  }, app).listen(8443, () => {
+  console.log('Listening HTTPS')
+  })
 }
 module.exports = server
