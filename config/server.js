@@ -9,7 +9,6 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const server = express()
 
-const production = true;
 
 //Certificado https
 // Certificate
@@ -27,12 +26,15 @@ server.use(express.static(__dirname + '/static', { dotfiles: 'allow' } ))
 server.listen(port, function(){
   console.log(`backend is running on port ${port}.`)
 })
+
+const production = true
 if (production){
+  console.log('entrou no ssl')
   https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/chain.pem')
-  }, server).listen(443, () => {
+  }, server).listen(3443, () => {
   console.log('Listening HTTPS')
   })
 }
