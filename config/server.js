@@ -32,7 +32,7 @@ if (production){
     key: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/chain.pem')
-  }, app).listen(443, () => {
+  }, server).listen(443, () => {
   console.log('Listening HTTPS')
   })
 }
