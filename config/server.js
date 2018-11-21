@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const server = express()
 
-const production = false;
+const production = true;
 
 //Certificado https
 // Certificate
@@ -32,7 +32,7 @@ if (production){
     key: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/chain.pem')
-  }, app).listen(8443, () => {
+  }, app).listen(443, () => {
   console.log('Listening HTTPS')
   })
 }
