@@ -1,4 +1,4 @@
-const port = 3030
+const port = 8000
 //const https = require('https')
 //const devId = process.env.DEV_ID
 //const azMktPlace = process.env.AZ_MKT_PLACE
@@ -34,7 +34,7 @@ if (production){
     key: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/chain.pem')
-  }, server).listen(443, () => {
+  }, server).listen(8080, () => {
   console.log('Listening HTTPS')
   })
 }
