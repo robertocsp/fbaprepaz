@@ -1,7 +1,5 @@
 const port = 3030
-//const https = require('https')
-//const devId = process.env.DEV_ID
-//const azMktPlace = process.env.AZ_MKT_PLACE
+const portSSL = 3031
 
 const fs = require('fs');
 const https = require('https');
@@ -27,15 +25,23 @@ server.listen(port, function(){
   console.log(`backend is running on port ${port}.`)
 })
 
-const production = true
+
+const production = false
+
 if (production){
-  console.log('entrou no ssl')
   https.createServer({
     key: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/privkey.pem'),
     cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/chain.pem')
-  }, server).listen(3031, () => {
-  console.log('Listening HTTPS')
+  }, server).listen(portSSL, () => {
+    console.log('Listening HTTPS')
+  })
+} else{
+  https.createServer({
+    key: fs.readFileSync('/Users/robertopereira/Dropbox/VoiServices-Holding/apps/localssl/server.key'),
+    cert: fs.readFileSync('/Users/robertopereira/Dropbox/VoiServices-Holding/apps/localssl/server.crt')
+  }, server).listen(portSSL, () => {
+    console.log('Listening HTTPS')
   })
 }
 module.exports = server

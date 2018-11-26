@@ -15,5 +15,10 @@ module.exports = function(server){
   router.route('/asinChecker').post(asinCheckerService.checkAsinsInInventory)
   //asinCheckerService.register(router, '/asinChecker')
 
+  const testePost = require('../api/testePost/testePostService')
+  router.route('/testePost').post(testePost.makePost)
+
+  const lastOrders = require('../api/lastOrders/lastOrdersService')
+  router.route('/lastorders').get(lastOrders.getLastOrders)
 
 }
