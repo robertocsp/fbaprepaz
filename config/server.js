@@ -34,14 +34,14 @@ if (typeof production !== 'undefined'){
     cert: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/cert.pem'),
     ca: fs.readFileSync('/etc/letsencrypt/live/app.voiservices.com/chain.pem')
   }, server).listen(portSSL, () => {
-    console.log(`Listening HTTPS on port ${portSSL}.`)
+    console.log(`Listening HTTPS on port ${portSSL}. em produção`)
   })
 } else{
   https.createServer({
     key: fs.readFileSync('/Users/robertopereira/Dropbox/VoiServices-Holding/apps/localssl/server.key'),
     cert: fs.readFileSync('/Users/robertopereira/Dropbox/VoiServices-Holding/apps/localssl/server.crt')
   }, server).listen(portSSL, () => {
-    console.log(`Listening HTTPS on port ${portSSL}.`)
+    console.log(`Listening HTTPS on port ${portSSL}. em dev`)
   })
 }
 module.exports = server
