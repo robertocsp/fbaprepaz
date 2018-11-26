@@ -13,6 +13,7 @@ module.exports = function(server){
 
   const asinCheckerService = require('../api/asinChecker/asinCheckerService')
   router.route('/asinChecker').post(asinCheckerService.checkAsinsInInventory)
+  router.route('/getproductinfo/:asin').get(asinCheckerService.getMatchingProductForId)
   //asinCheckerService.register(router, '/asinChecker')
 
   const testePost = require('../api/testePost/testePostService')
@@ -20,5 +21,6 @@ module.exports = function(server){
 
   const lastOrders = require('../api/lastOrders/lastOrdersService')
   router.route('/lastorders').get(lastOrders.getLastOrders)
+
 
 }

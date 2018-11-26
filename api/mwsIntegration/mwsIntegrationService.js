@@ -43,6 +43,7 @@ Client.prototype.request = function(requestData, callback) {
   }
   if (!requestData.query.Timestamp) {
     requestData.query.Timestamp = (new Date()).toISOString();
+    //console.log(requestData.query.Timestamp)
   }
   if (!requestData.query.AWSAccessKeyId) {
     requestData.query.AWSAccessKeyId = this.accessKeyId;
@@ -60,6 +61,8 @@ Client.prototype.request = function(requestData, callback) {
   // qs.stringify will sorts the keys and url encode
   let stringToSign = ["POST", this.host, requestData.path, qs.stringify(requestData.query)].join('\n');
   requestData.query.Signature = crypto.createHmac('sha256', this.secretAccessKey).update(stringToSign).digest('base64');
+
+  //console.log(requestData)
 
   let options = {
     url: 'https://' + this.host + ':' + this.port + requestData.path,
@@ -87,7 +90,7 @@ Client.prototype.request = function(requestData, callback) {
       options.headers['Content-Type'] = 'text/tab-separated-values; charset=iso-8859-1';
     }
   } else {
-    options.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
+    options.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8'; //por default assume este aqui
   }
 
   // Add body content if any
@@ -96,12 +99,22 @@ Client.prototype.request = function(requestData, callback) {
     options.headers['Content-MD5'] = crypto.createHash('md5').update(requestData.feedContent).digest('base64');
   }
 
+  //console.log(options)
+
   // Make call to MWS
   request.post(options, function (error, response, body) {
+    //console.log(options)
+    //console.log('o que veio do body:')
+    //console.log(body)
+    //console.log('o que veio do error:')
+    //console.log(error)
+    //console.log('o que veio do response:')
+    //console.log(response)
     if (error) return callback(error);
 
     if (response.headers.hasOwnProperty('content-type') && response.headers['content-type'].startsWith('text/xml')) {
       // xml2js
+
       xmlParser(body, function (err, result) {
         callback(err, result);
       });
