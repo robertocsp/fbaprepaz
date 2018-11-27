@@ -13,7 +13,7 @@ module.exports = function(server){
 
   const asinCheckerService = require('../api/asinChecker/asinCheckerService')
   router.route('/asinChecker').post(asinCheckerService.checkAsinsInInventory)
-  router.route('/getproductinfo/:asin').get(asinCheckerService.getMatchingProductForId)
+  router.route('/getproductinfo/:asin/:preco').get(asinCheckerService.getMatchingProductForId)
   //asinCheckerService.register(router, '/asinChecker')
 
   const testePost = require('../api/testePost/testePostService')
