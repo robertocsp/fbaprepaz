@@ -49,17 +49,17 @@ function getMatchingProductForId(req, res){
     var listPrice = result.GetMatchingProductForIdResponse.GetMatchingProductForIdResult[0].Products[0].Product[0].AttributeSets[0]['ns2:ItemAttributes'][0]['ns2:ListPrice'][0]['ns2:Amount'][0]
     var rank = parseInt(result.GetMatchingProductForIdResponse.GetMatchingProductForIdResult[0].Products[0].Product[0].SalesRankings[0].SalesRank[0].Rank[0])
 
-    var preco = parseFloat(req.params.preco)
+
 
     var recomendacao = 'comprar'
 
     console.log(rank)
 
-    var html = `upc: ${upc}<br>asin: ${asin}<br>brand: ${brand}<br>listPrice: ${listPrice}<br>rank: ${rank}<br>recomendacao: ${recomendacao}`
+    //var html = `upc: ${upc}<br>asin: ${asin}<br>brand: ${brand}<br>listPrice: ${listPrice}<br>rank: ${rank}<br>recomendacao: ${recomendacao}`
 
     //console.log(rank)
-    res.send(html)
-    //res.send(JSON.stringify(result, undefined, 400))
+    //res.send(html)
+    res.send(JSON.stringify(result, undefined, 400))
   })
 
 }

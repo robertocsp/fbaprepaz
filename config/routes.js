@@ -11,6 +11,9 @@ module.exports = function(server){
     res.send(`Voi Services APP`)
   })
 
+  const getProduct = require('../api/getProduct/getProductService')
+  router.route('/getproduct').get(getProduct.getProduct)
+
   const buyerDecision = require('../api/buyerDecision/buyerDecisionService')
   router.route('/buyerdecision').get(buyerDecision.startDecision)
 
@@ -19,11 +22,13 @@ module.exports = function(server){
 
   const asinCheckerService = require('../api/asinChecker/asinCheckerService')
   router.route('/asinChecker').post(asinCheckerService.checkAsinsInInventory)
-  router.route('/getproductinfo/:asin/:preco').get(asinCheckerService.getMatchingProductForId)
+  router.route('/getproductinfo/:asin').get(asinCheckerService.getMatchingProductForId)
   //asinCheckerService.register(router, '/asinChecker')
 
   const testePost = require('../api/testePost/testePostService')
   router.route('/testePost').post(testePost.makePost)
+
+  
 
   const lastOrders = require('../api/lastOrders/lastOrdersService')
   router.route('/lastorders').get(lastOrders.getLastOrders)
