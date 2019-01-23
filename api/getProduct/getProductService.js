@@ -18,6 +18,7 @@ function getProduct(req, res){
   try{
       var asin = mwsProducts.getMatchingProductForUPC(upc, function(callback){
         _produtoDAO = callback
+        /*
         console.log(`Asin do callback fora do modulo: ${_produtoDAO.getAsin()}`)
         console.log(`listPrice do callback fora do modulo: ${callback.getListPrice()}`)
         console.log(`Brand do callback fora do modulo: ${callback.getBrand()}`)
@@ -26,9 +27,9 @@ function getProduct(req, res){
         console.log(`Nome do callback fora do modulo: ${callback.getNome()}`)
         console.log(`Fee do callback fora do modulo: ${callback.getFee()}`)
         console.log(`Peso do callback fora do modulo: ${callback.getPeso()}`)
+        */
 
-
-        console.log(`shipping ${_produtoDAO.getShipping()}`)
+        //console.log(`shipping ${_produtoDAO.getShipping()}`)
         //ajustando o Fee
         _produtoDAO.setFee((_produtoDAO.getFee() - _produtoDAO.getShipping()).toFixed(2))
 
@@ -42,6 +43,8 @@ function getProduct(req, res){
             'Fee': _produtoDAO.getFee(),
             'Shipping': _produtoDAO.getShipping(),
             'Rank': _produtoDAO.getRank(),
+            'URL:': 'http://www.amazon.com/gp/product/'+_produtoDAO.getAsin(),
+            'Preco_Cliente':0
         }
 
         //var json = JSON.stringify({anObject:objetoJson})

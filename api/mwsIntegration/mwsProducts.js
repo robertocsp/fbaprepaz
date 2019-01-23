@@ -14,13 +14,16 @@ const produtoDAO = require('../../model/ProdutoDAO')
 function GetMatchingProductForId(upc, callback){
   var _produtoDAO = new produtoDAO()
 
+  //Tem que melhorar muito essa logica, para poder entender ASIN e outros possíveis tipos
+  var idType = upc.length === 13 ? 'EAN' : 'UPC'
+
   let postParams = {
   path: '/Products/2011-10-01',
   query: {
     'Action': 'GetMatchingProductForId',
     'IdList.Id.1': upc,
     'ItemCondition': 'New',
-    'IdType': 'UPC',
+    'IdType': idType,
     'MarketplaceId': 'ATVPDKIKX0DER', //id dos USA
     'Version': '2011-10-01'
   }
@@ -136,9 +139,50 @@ function GetLowestOfferListingsForASIN(asin, callback){
 
     try{
         var resultado = utilService.replaceColonInJSON(result)
-        console.log(JSON.stringify(resultado))
+        //console.log(JSON.stringify(resultado))
 
-        var listPrice = utilService.getValueOfFirstObject(jp.query(resultado, '$..LandedPrice.0.Amount'))
+
+        var lowestPriceFBA = 0
+        var lowestPriceFBM = 0
+
+        function getLowestPriceNewCondition(obj){
+          var fbmPrices = []
+          var fbaPrices = []
+          for (var property in obj){
+            if (property === 'LowestOfferListing'){
+              for (var property2 in obj[property]){
+                //console.log(`testar pegar o valor: ${obj[property][property2].Qualifiers[0].ItemCondition[0]}`)
+                if (obj[property][property2].Qualifiers[0].ItemCondition[0] == 'New' && obj[property][property2].Qualifiers[0].FulfillmentChannel[0] == 'Merchant'){
+                    fbmPrices.push(parseFloat(obj[property][property2].Price[0].LandedPrice[0].Amount[0]))
+                }
+
+                if (obj[property][property2].Qualifiers[0].ItemCondition[0] == 'New' && obj[property][property2].Qualifiers[0].FulfillmentChannel[0] == 'Amazon'){
+                    fbaPrices.push(parseFloat(obj[property][property2].Price[0].LandedPrice[0].Amount[0]))
+                }
+
+              }
+              lowestPriceFBA = Math.min(...fbaPrices)
+
+            }
+            if(typeof obj[property] === 'object'){
+              obj[property] = getLowestPriceNewCondition(obj[property])
+            }
+
+          }
+        }
+
+
+        getLowestPriceNewCondition(result)
+
+        //var listPrice = utilService.getValueOfFirstObject(jp.query(resultado, '$..LandedPrice.0.Amount'))
+
+        //var precoMaisBaratoMerchant = utilService.getValueOfFirstObject(jp.query(resultado, '$..LandedPrice.0.Amount'))
+
+        var listPrice
+
+        listPrice = lowestPriceFBA === 0 ? lowestPriceFBM : lowestPriceFBA
+
+      console.log(`listPrice: ${listPrice}`)
 
         return callback(listPrice)
 
