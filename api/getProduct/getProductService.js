@@ -38,6 +38,7 @@ function getProduct(req, res){
         var objetoJson =
         {
             'ASIN' : _produtoDAO.getAsin(),
+            'UPC' : '00000', //tenho que implementar ainda
             'Nome': _produtoDAO.getNome(),
             'BuyBox': _produtoDAO.getListPrice(),
             'Fee': _produtoDAO.getFee(),
