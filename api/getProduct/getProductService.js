@@ -11,12 +11,13 @@ let produtoDAO = require('../../model/ProdutoDAO')
 function getProduct(req, res){
 
   var upc = req.body.upc
-  //var asin = req.body.asin
+  var asin = req.body.asin
+
 
   var _produtoDAO = new produtoDAO()
 
   try{
-      var asin = mwsProducts.getMatchingProductForUPC(upc, function(callback){
+      var asin = mwsProducts.getMatchingProductForUPCASIN(upc, asin, function(callback){
         _produtoDAO = callback
         /*
         console.log(`Asin do callback fora do modulo: ${_produtoDAO.getAsin()}`)
@@ -38,7 +39,7 @@ function getProduct(req, res){
         var objetoJson =
         {
             'ASIN' : _produtoDAO.getAsin(),
-            'UPC' : '00000', //tenho que implementar ainda
+            'UPC' : _produtoDAO.getAsin(), //tenho que implementar ainda
             'Nome': _produtoDAO.getNome(),
             'BuyBox': _produtoDAO.getListPrice(),
             'Fee': _produtoDAO.getFee(),

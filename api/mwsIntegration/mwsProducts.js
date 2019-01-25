@@ -11,17 +11,30 @@ const utilService = require('../util/utilService');
 const produtoDAO = require('../../model/ProdutoDAO')
 
 
-function GetMatchingProductForId(upc, callback){
+function GetMatchingProductForId(upc, asin, callback){
   var _produtoDAO = new produtoDAO()
+  var idType = ''
+  var idList = ''
+
+  if (typeof asin !== 'undefined'){
+    idType = 'ASIN'
+    idList = asin
+  }
+  else if (typeof upc !== 'undefined') {
+    idType = upc.length === 13 ? 'EAN' : 'UPC'
+    idList = upc
+
+  }
+
 
   //Tem que melhorar muito essa logica, para poder entender ASIN e outros possíveis tipos
-  var idType = upc.length === 13 ? 'EAN' : 'UPC'
+
 
   let postParams = {
   path: '/Products/2011-10-01',
   query: {
     'Action': 'GetMatchingProductForId',
-    'IdList.Id.1': upc,
+    'IdList.Id.1': idList,
     'ItemCondition': 'New',
     'IdType': idType,
     'MarketplaceId': 'ATVPDKIKX0DER', //id dos USA
@@ -195,10 +208,10 @@ function GetLowestOfferListingsForASIN(asin, callback){
 }
 
 
-function getMatchingProductForUPC(upc, callback){
+function getMatchingProductForUPCASIN(upc, asin, callback){
   var _produtoDAO = new produtoDAO()
 
-  GetMatchingProductForId(upc, function(callback2){
+  GetMatchingProductForId(upc, asin, function(callback2){
     _produtoDAO = callback2
     var asin = _produtoDAO.getAsin()
 
@@ -222,4 +235,4 @@ function getMatchingProductForUPC(upc, callback){
 
 }
 
-module.exports = { getMatchingProductForUPC }
+module.exports = { getMatchingProductForUPCASIN }

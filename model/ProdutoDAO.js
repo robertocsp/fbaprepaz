@@ -1,5 +1,6 @@
 function ProdutoDAO(){
   this._asin = ''
+  this._upc = ''
   this._brand = ''
   this._listPrice = 0
   this._rank = 0
@@ -13,6 +14,14 @@ function ProdutoDAO(){
 
 ProdutoDAO.prototype.setAsin = function(asin){
   this._asin = asin
+}
+
+ProdutoDAO.prototype.getAsin = function(){
+  return this._asin
+}
+
+ProdutoDAO.prototype.setUpc = function(upc){
+  this._upc = upc
 }
 
 ProdutoDAO.prototype.getAsin = function(){
