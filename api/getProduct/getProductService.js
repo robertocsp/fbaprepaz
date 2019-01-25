@@ -44,9 +44,9 @@ function getProduct(req, res){
             'BuyBox': _produtoDAO.getListPrice(),
             'Fee': _produtoDAO.getFee(),
             'Shipping': _produtoDAO.getShipping(),
-            'Rank': _produtoDAO.getRank(),
+            'Rank': '1', //_produtoDAO.getRank(),
             'URL': 'http://www.amazon.com/gp/product/'+_produtoDAO.getAsin(),
-            'Preco_Cliente':0
+            'Preco_Cliente':_produtoDAO.suggestedPrice().toFixed(2)
         }
 
         //var json = JSON.stringify({anObject:objetoJson})

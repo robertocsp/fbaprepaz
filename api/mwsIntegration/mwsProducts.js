@@ -54,6 +54,7 @@ function GetMatchingProductForId(upc, asin, callback){
 
         //console.log(`tipo do result DEPOIS de rodar a funcao: ${JSON.stringify(result)}`)
 
+        //
         //console.log(JSON.stringify(resultado))
 
 

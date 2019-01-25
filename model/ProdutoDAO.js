@@ -92,6 +92,20 @@ ProdutoDAO.prototype.getShipping = function(){
   return this._shipping
 }
 
+ProdutoDAO.prototype.suggestedPrice = function(){
+  var lucroAntesValorProduto = this._listPrice - this._fee - this._shipping
+  var suggestedPrice = lucroAntesValorProduto * 0.65 //este 0.65 ainda precisa ser melhor testado.
+  var lucroAposValorProduto = this._listPrice - this._fee - this._shipping - suggestedPrice
+  if (lucroAposValorProduto > 5){
+    return suggestedPrice - 1.29 // o custo de redirecionamento é adicionado posterioremente no formulario
+  }
+  else{
+    suggestedPrice = suggestedPrice - (5 - lucroAposValorProduto)
+    return suggestedPrice
+
+  }
+
+}
 
 
 module.exports = ProdutoDAO
