@@ -12,7 +12,7 @@ module.exports = function(server){
   })
 
   const getProduct = require('../api/getProduct/getProductService')
-  router.route('/getproduct').get(getProduct.getProduct)
+  router.route('/getproduct').post(getProduct.getProduct)
 
   const buyerDecision = require('../api/buyerDecision/buyerDecisionService')
   router.route('/buyerdecision').get(buyerDecision.startDecision)
@@ -28,7 +28,7 @@ module.exports = function(server){
   const testePost = require('../api/testePost/testePostService')
   router.route('/testePost').post(testePost.makePost)
 
-  
+
 
   const lastOrders = require('../api/lastOrders/lastOrdersService')
   router.route('/lastorders').get(lastOrders.getLastOrders)
