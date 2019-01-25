@@ -52,6 +52,8 @@ function getProduct(req, res){
         //var json = JSON.stringify({anObject:objetoJson})
 
         //res.send(json)
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
         res.json(objetoJson)
 
