@@ -167,15 +167,18 @@ function GetLowestOfferListingsForASIN(asin, callback){
               for (var property2 in obj[property]){
                 //console.log(`testar pegar o valor: ${obj[property][property2].Qualifiers[0].ItemCondition[0]}`)
                 if (obj[property][property2].Qualifiers[0].ItemCondition[0] == 'New' && obj[property][property2].Qualifiers[0].FulfillmentChannel[0] == 'Merchant'){
+
                     fbmPrices.push(parseFloat(obj[property][property2].Price[0].LandedPrice[0].Amount[0]))
                 }
 
                 if (obj[property][property2].Qualifiers[0].ItemCondition[0] == 'New' && obj[property][property2].Qualifiers[0].FulfillmentChannel[0] == 'Amazon'){
                     fbaPrices.push(parseFloat(obj[property][property2].Price[0].LandedPrice[0].Amount[0]))
+                    console.log('entrou no new fba')
                 }
 
               }
               lowestPriceFBA = Math.min(...fbaPrices)
+              lowestPriceFBM = Math.min(...fbmPrices)
 
             }
             if(typeof obj[property] === 'object'){
@@ -194,9 +197,16 @@ function GetLowestOfferListingsForASIN(asin, callback){
 
         var listPrice
 
-        listPrice = lowestPriceFBA === 0 ? lowestPriceFBM : lowestPriceFBA
+        //console.log(`lowestPriceFBA: ${lowestPriceFBA}`)
+        //console.log(`lowestPriceFBM: ${lowestPriceFBM}`)
 
-      console.log(`listPrice: ${listPrice}`)
+        //console.log(`Number.isFinite(lowestPriceFBA): ${Number.isFinite(lowestPriceFBA)}`)
+        //console.log(`Number.isFinite(lowestPriceFBM): ${Number.isFinite(lowestPriceFBM)}`)
+
+
+        listPrice = lowestPriceFBA === 0 || Number.isFinite(lowestPriceFBA) === false  ? lowestPriceFBM : lowestPriceFBA
+
+        //console.log(`listPrice: ${listPrice}`)
 
         return callback(listPrice)
 
