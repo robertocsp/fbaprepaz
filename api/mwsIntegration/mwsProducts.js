@@ -153,7 +153,7 @@ function GetLowestOfferListingsForASIN(asin, condicao, callback){
 
     try{
         var resultado = utilService.replaceColonInJSON(result)
-        console.log(JSON.stringify(resultado))
+        //console.log(JSON.stringify(resultado))
 
 
         var lowestPriceFBA = 0
@@ -256,7 +256,7 @@ function getMatchingProductForUPCASIN(upc, asin, condicao, callback){
     var asin = _produtoDAO.getAsin()
 
     GetLowestOfferListingsForASIN(asin, condicao, function(callback3){
-      var listPrice = callback3
+      var listPrice = parseFloat(callback3).toFixed(2)
       _produtoDAO.setListPrice(listPrice)
 
       let shipping = _produtoDAO.getPeso() * 0.45 //Eu determinei este valor mas isso ideal vir de sistema
