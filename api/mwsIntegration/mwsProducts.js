@@ -135,7 +135,7 @@ function GetMyFeesEstimate(asin, listPrice, shipping, callback){
   })
 }
 
-function GetLowestOfferListingsForASIN(asin, callback){
+function GetLowestOfferListingsForASIN(asin, condicao, callback){
 
 
   let postParams = {
@@ -153,11 +153,40 @@ function GetLowestOfferListingsForASIN(asin, callback){
 
     try{
         var resultado = utilService.replaceColonInJSON(result)
-        //console.log(JSON.stringify(resultado))
+        console.log(JSON.stringify(resultado))
 
 
         var lowestPriceFBA = 0
         var lowestPriceFBM = 0
+        var vCondicao = ''
+        var subCondicao = ''
+
+        switch (condicao) {
+          case 'New':
+            vCondicao = 'New'
+            subCondicao = 'New'
+            break;
+          case 'Used Like New':
+            vCondicao = 'Used'
+            subCondicao = 'Mint'
+            break;
+          case 'Used Very Good':
+            vCondicao = 'Used'
+            subCondicao = 'VeryGood'
+            break;
+          case 'Used Good':
+            vCondicao = 'Used'
+            subCondicao = 'Good'
+            break;
+          case 'Used Acceptable':
+            vCondicao = 'Used'
+            subCondicao = 'Acceptable'
+            break;
+          case 'Refurbished':
+            vCondicao = 'New'
+            subCondicao = 'New'
+            break;
+        }
 
         function getLowestPriceNewCondition(obj){
           var fbmPrices = []
@@ -166,12 +195,12 @@ function GetLowestOfferListingsForASIN(asin, callback){
             if (property === 'LowestOfferListing'){
               for (var property2 in obj[property]){
                 //console.log(`testar pegar o valor: ${obj[property][property2].Qualifiers[0].ItemCondition[0]}`)
-                if (obj[property][property2].Qualifiers[0].ItemCondition[0] == 'New' && obj[property][property2].Qualifiers[0].FulfillmentChannel[0] == 'Merchant'){
+                if (obj[property][property2].Qualifiers[0].ItemCondition[0] == vCondicao && obj[property][property2].Qualifiers[0].ItemSubcondition[0] == subCondicao && obj[property][property2].Qualifiers[0].FulfillmentChannel[0] == 'Merchant'){
 
                     fbmPrices.push(parseFloat(obj[property][property2].Price[0].LandedPrice[0].Amount[0]))
                 }
 
-                if (obj[property][property2].Qualifiers[0].ItemCondition[0] == 'New' && obj[property][property2].Qualifiers[0].FulfillmentChannel[0] == 'Amazon'){
+                if (obj[property][property2].Qualifiers[0].ItemCondition[0] == vCondicao && obj[property][property2].Qualifiers[0].ItemSubcondition[0] == subCondicao && obj[property][property2].Qualifiers[0].FulfillmentChannel[0] == 'Amazon'){
                     fbaPrices.push(parseFloat(obj[property][property2].Price[0].LandedPrice[0].Amount[0]))
                     console.log('entrou no new fba')
                 }
@@ -219,14 +248,14 @@ function GetLowestOfferListingsForASIN(asin, callback){
 }
 
 
-function getMatchingProductForUPCASIN(upc, asin, callback){
+function getMatchingProductForUPCASIN(upc, asin, condicao, callback){
   var _produtoDAO = new produtoDAO()
 
   GetMatchingProductForId(upc, asin, function(callback2){
     _produtoDAO = callback2
     var asin = _produtoDAO.getAsin()
 
-    GetLowestOfferListingsForASIN(asin, function(callback3){
+    GetLowestOfferListingsForASIN(asin, condicao, function(callback3){
       var listPrice = callback3
       _produtoDAO.setListPrice(listPrice)
 

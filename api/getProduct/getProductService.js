@@ -12,12 +12,12 @@ function getProduct(req, res){
 
   var upc = req.body.upc
   var asin = req.body.asin
-
+  var condicao = req.body.condicao
 
   var _produtoDAO = new produtoDAO()
 
   try{
-      var asin = mwsProducts.getMatchingProductForUPCASIN(upc, asin, function(callback){
+      var asin = mwsProducts.getMatchingProductForUPCASIN(upc, asin, condicao, function(callback){
         _produtoDAO = callback
         /*
         console.log(`Asin do callback fora do modulo: ${_produtoDAO.getAsin()}`)
