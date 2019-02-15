@@ -81,6 +81,9 @@ function GetMatchingProductForId(upc, asin, callback){
         _produtoDAO.setPeso(utilService.getValueOfFirstObject(peso))
 
 
+        GetProductCategoriesForASIN(_produtoDAO.getAsin(), function(callback2){
+            _produtoDAO.setCategoria = callback2
+        })
         return callback(_produtoDAO)
 
     }
@@ -202,7 +205,7 @@ function GetLowestOfferListingsForASIN(asin, condicao, callback){
 
                 if (obj[property][property2].Qualifiers[0].ItemCondition[0] == vCondicao && obj[property][property2].Qualifiers[0].ItemSubcondition[0] == subCondicao && obj[property][property2].Qualifiers[0].FulfillmentChannel[0] == 'Amazon'){
                     fbaPrices.push(parseFloat(obj[property][property2].Price[0].LandedPrice[0].Amount[0]))
-                    console.log('entrou no new fba')
+                    //console.log('entrou no new fba')
                 }
 
               }
@@ -246,6 +249,40 @@ function GetLowestOfferListingsForASIN(asin, condicao, callback){
 
   })
 }
+
+function GetProductCategoriesForASIN(asin, callback){
+  let postParams = {
+    path: '/Products/2011-10-01',
+    query: {
+      'Action': 'GetProductCategoriesForASIN',
+      'ASIN': asin,
+      'MarketplaceId': 'ATVPDKIKX0DER', //id dos USA
+      'Version': '2011-10-01'
+    }
+  }
+  mws.request(postParams, function(e, result) {
+
+    try{
+
+        var resultado = utilService.replaceColonInJSON(result)
+
+        //console.log(JSON.stringify(resultado))
+
+        var categoria = jp.query(resultado, '$..ProductCategoryName')
+
+        //console.log(`categoria: ${utilService.getValueOfLastObject(categoria)}`)
+
+        return callback(utilService.getValueOfLastObject(categoria))
+
+    }
+    catch(error){
+      console.log(error)
+    }
+
+  })
+
+}
+
 
 
 function getMatchingProductForUPCASIN(upc, asin, condicao, callback){

@@ -22,4 +22,17 @@ function getValueOfFirstObject(obj){
   return resultado;
 }
 
-module.exports = { replaceColonInJSON , getValueOfFirstObject }
+function getValueOfLastObject(obj){
+  var resultado = ''
+  for (var property in obj) {
+    if(typeof obj[property] === 'object'){
+      obj[property] = getValueOfFirstObject(obj[property])
+    }
+    resultado = obj[property]
+
+
+  }
+  return resultado;
+}
+
+module.exports = { replaceColonInJSON , getValueOfFirstObject, getValueOfLastObject }
