@@ -64,11 +64,14 @@ function insertManifest(req, res){
 
       var query = {'asin': objetoJson.asin}
       InventoryBuilding.findOneAndUpdate(query, { $inc: { qty: 1 } }, { new: true }, function(err, doc){
+        console.log(`doc: ${doc}`)
         if (err){
           console.log(`deu erro no update: ${err}`)
         }
         if(doc === null){
+          console.log('vai fazer o create')
           InventoryBuilding.create(objetoJson)
+          console.log('fez o create')
         }
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
