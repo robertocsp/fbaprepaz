@@ -62,9 +62,10 @@ function insertManifest(req, res){
       //Tenho que verificar se o produto já existe para incrementar a quantidade, e se não existir, gravar como unmanifested
       //InventoryBuilding.create(objetoJson)
 
-      var query = {'asin': objetoJson.asin}
+      var query = {'asin': objetoJson.asin }
       InventoryBuilding.findOneAndUpdate(query, { $inc: { qty: 1 } }, { new: true }, function(err, doc){
         console.log(`doc: ${doc}`)
+        console.log(`inventarioNumero: ${inventarioNumero}`)
         if (err){
           console.log(`deu erro no update: ${err}`)
         }
