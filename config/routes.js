@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path');
 
 module.exports = function(server){
 
@@ -8,12 +9,19 @@ module.exports = function(server){
 
 
   server.get('/', function(req, res){
-    res.send(`Voi Services APP`)
+    res.send('Voi Services APP')
   })
 
   const getProduct = require('../api/getProduct/getProductService')
   router.route('/getproduct').post(getProduct.getProduct)
 
+  const inventorybuilding = require('../api/inventoryBuilding/inventoryBuildingService')
+  router.route('/inventorybuilding').post(inventorybuilding.insertManifest)
+  router.route('/manifestgenerate').get(inventorybuilding.manifestList)
+  router.route('/manifestgenerate/:id').get(inventorybuilding.manifestGenerate)
+
+
+  /*
   const buyerDecision = require('../api/buyerDecision/buyerDecisionService')
   router.route('/buyerdecision').get(buyerDecision.startDecision)
 
@@ -32,6 +40,6 @@ module.exports = function(server){
 
   const lastOrders = require('../api/lastOrders/lastOrdersService')
   router.route('/lastorders').get(lastOrders.getLastOrders)
-
+  */
 
 }
