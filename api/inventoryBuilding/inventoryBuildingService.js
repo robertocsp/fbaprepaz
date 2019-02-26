@@ -140,7 +140,6 @@ function inventoryToCsv(inventoryJSON, callback){
 }
 
 function deleteProduct(req, res){
-  console.log('entrou na funcao delete')
   var query = {'asin': req.params.asin, 'inventarionumero': req.params.inventario }
   var objetoJson = {}
   InventoryBuilding.findOneAndUpdate(query, { $inc: { qty: -1 } }, { new: true }, function(err, doc){
@@ -180,7 +179,8 @@ function deleteProduct(req, res){
     }
 
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
 
     res.json(objetoJson)
 
