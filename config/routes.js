@@ -12,11 +12,14 @@ module.exports = function(server){
     res.send('Voi Services APP')
   })
 
+
+
   const getProduct = require('../api/getProduct/getProductService')
   router.route('/getproduct').post(getProduct.getProduct)
 
   const inventorybuilding = require('../api/inventoryBuilding/inventoryBuildingService')
   router.route('/inventorybuilding').post(inventorybuilding.insertManifest)
+  router.route('/inventorybuilding/:inventario/:asin').delete(inventorybuilding.deleteProduct)
   router.route('/manifestgenerate').get(inventorybuilding.manifestList)
   router.route('/manifestgenerate/:id').get(inventorybuilding.manifestGenerate)
 

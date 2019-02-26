@@ -139,4 +139,55 @@ function inventoryToCsv(inventoryJSON, callback){
   return callback(cont)
 }
 
-module.exports = {insertManifest, manifestGenerate, manifestList}
+function deleteProduct(req, res){
+  console.log('entrou na funcao delete')
+  var query = {'asin': req.params.asin, 'inventarionumero': req.params.inventario }
+  var objetoJson = {}
+  InventoryBuilding.findOneAndUpdate(query, { $inc: { qty: -1 } }, { new: true }, function(err, doc){
+    if (err){
+      console.log(`deu erro no update: ${err}`)
+    }
+
+    if (doc===null){
+      objetoJson = {
+        'mensagem': 'item não identificado',
+        'status': 'err'
+      }
+    }
+    else if (doc.qty <= 0) {
+      InventoryBuilding.findOneAndRemove(query, function(err, doc){
+        if (err){
+          console.log(`deu erro no delete: ${err}`)
+        }
+        if (doc===null){
+          objetoJson = {
+              'mensagem': 'Produto excluido, quantidade igual ou menor que zero',
+              'status': 'ok'
+            }
+        }else {
+          objetoJson = {
+              'mensagem': 'erro! objeto não deletado',
+              'status': 'err'
+            }
+        }
+      })
+    }
+    else{
+      objetoJson = {
+        'mensagem': `produto ainda tem quantidade: ${doc.qty}`,
+        'status': 'ok'
+      }
+    }
+
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
+    res.json(objetoJson)
+
+  })
+
+
+
+}
+
+module.exports = {insertManifest, manifestGenerate, manifestList, deleteProduct}
