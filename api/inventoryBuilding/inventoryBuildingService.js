@@ -123,7 +123,7 @@ function inventoryToCsv(inventoryJSON, callback){
 
   for( var i in inventoryJSON){
     var nameSemVirgula = inventoryJSON[i].name.replace(/,/g, '')
-    nameSemVirgula = inventoryJSON[i].name.replace(/;/g, '')
+    //nameSemVirgula = inventoryJSON[i].name.replace(/;/g, '')
 
     logger.write(
         inventoryJSON[i].category + ';' +
