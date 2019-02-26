@@ -17,6 +17,7 @@ module.exports = function(server){
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
       res.header('Access-Control-Allow-Headers', 'Content-Type');
+      console.log('colocou o cabecalho no response')
       next();
   })
 
